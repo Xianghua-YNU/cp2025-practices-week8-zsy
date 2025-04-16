@@ -42,8 +42,13 @@ def alternative_formula(a, b, c):
         return None 
     
     sqrt_D = np.sqrt(D)
-    x1 = (2*c) / (-b + sqrt_D)
-    x2 = (2*c) / (-b - sqrt_D)
+    
+    if b > 0:
+        x1 = (2*c) / (-b - sqrt_D)
+        x2 = (-b + sqrt_D) / (2*a)
+    else:
+        x1 = (2*c) / (-b + sqrt_D)
+        x2 = (-b - sqrt_D) / (2*a)
     
     return (x1, x2)
 
@@ -62,12 +67,12 @@ def stable_formula(a, b, c):
     if a == 0:
         if b == 0:
             if c == 0:
-                return None
+                return None if c != 0 else (float('-inf'), float('inf'))
             else:
                 return None
         else:
             x = -c / b
-            return (x, x)
+            return (-c / b, None)
     
     D = b**2 - 4*a*c
     if D < 0:
