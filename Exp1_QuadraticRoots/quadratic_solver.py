@@ -12,7 +12,14 @@ def standard_formula(a, b, c):
         tuple: 方程的两个根 (x1, x2) 或 None(无实根)
     """
     # 学生在此处实现代码
-    pass
+    discriminant = b**2 - 4*a*c
+    if discriminant < 0:
+        return None
+    sqrt_discriminant = np.sqrt(discriminant)
+    x1 = (-b + sqrt_discriminant) / (2*a)
+    x2 = (-b - sqrt_discriminant) / (2*a)
+    return (x1, x2)
+
 
 def alternative_formula(a, b, c):
     """使用替代公式求解二次方程 ax^2 + bx + c = 0
@@ -27,7 +34,13 @@ def alternative_formula(a, b, c):
         tuple: 方程的两个根 (x1, x2) 或 None(无实根)
     """
     # 学生在此处实现代码
-    pass
+    discriminant = b**2 - 4*a*c
+    if discriminant < 0:
+        return None
+    sqrt_discriminant = np.sqrt(discriminant)
+    x1 = (2*c) / (-b + sqrt_discriminant)
+    x2 = (2*c) / (-b - sqrt_discriminant)
+    return (x1, x2)
 
 def stable_formula(a, b, c):
     """稳定的二次方程求根程序，能够处理各种特殊情况和数值稳定性问题
@@ -41,7 +54,17 @@ def stable_formula(a, b, c):
         tuple: 方程的两个根 (x1, x2) 或 None(无实根)
     """
     # 学生在此处实现代码
-    pass
+     discriminant = b**2 - 4*a*c
+    if discriminant < 0:
+        return None
+    sqrt_discriminant = np.sqrt(discriminant)
+    if b > 0:
+        x1 = (-b - sqrt_discriminant) / (2*a)
+        x2 = (2*c) / (-b - sqrt_discriminant)
+    else:
+        x1 = (-b + sqrt_discriminant) / (2*a)
+        x2 = (2*c) / (-b + sqrt_discriminant)
+    return (x1, x2)
 
 def main():
     test_cases = [
@@ -77,6 +100,25 @@ def main():
             print("x1 = {:.15f}, x2 = {:.15f}".format(roots3[0], roots3[1]))
         else:
             print("无实根")
+        
+        plt.figure(figsize=(10, 6))
+        plt.title("二次方程求根结果: {}x^2 + {}x + {} = 0".format(a, b, c))
+        plt.xlabel("方法")
+        plt.ylabel("根值")
+        
+        methods = ["标准公式", "替代公式", "稳定求根程序"]
+        roots = [roots1, roots2, roots3]
+        
+        for i, method in enumerate(methods):
+            if roots[i]:
+                plt.scatter([i, i], [roots[i][0], roots[i][1]], label=method)
+        
+        plt.xticks(range(len(methods)), methods)
+        plt.legend()
+        plt.grid(True)
+        plt.savefig("quadratic_roots_{}_{}_{}.png".format(a, b, c))
+        plt.close()
+        
 
 if __name__ == "__main__":
     main()
