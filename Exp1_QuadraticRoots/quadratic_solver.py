@@ -54,7 +54,7 @@ def stable_formula(a, b, c):
         tuple: 方程的两个根 (x1, x2) 或 None(无实根)
     """
     # 学生在此处实现代码
-     discriminant = b**2 - 4*a*c
+    discriminant = b**2 - 4*a*c
     if discriminant < 0:
         return None
     sqrt_discriminant = np.sqrt(discriminant)
