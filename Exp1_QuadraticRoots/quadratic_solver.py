@@ -61,13 +61,10 @@ def stable_formula(a, b, c):
         tuple: 方程的两个根 (x1, x2) 或 None(无实根)
     """
     # 学生在此处实现代码
-    if a == 0:
-        # 退化为一次方程
-        if b == 0:
-            # 无解或无穷多解
-            return None if c != 0 else (float('-inf'), float('inf'))
-        else:
-            return (-c / b, None)
+    if abs(a) < 1e-10:
+        if abs(b) < 1e-10:  # a ≈ 0 且 b ≈ 0
+            return None if abs(c) > 1e-10 else (0, 0)  
+        return (-c/b, -c/b) 
     
     # 计算判别式
     D = b**2 - 4*a*c
