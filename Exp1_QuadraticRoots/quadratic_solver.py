@@ -38,6 +38,7 @@ def alternative_formula(a, b, c):
     if discriminant < 0:
         return None
     sqrt_discriminant = np.sqrt(discriminant)
+    
     if b > 0:
         x1 = (2*c) / (-b - sqrt_discriminant)
         x2 = (-b + sqrt_discriminant) / (2*a)
@@ -45,8 +46,9 @@ def alternative_formula(a, b, c):
         x1 = (2*c) / (-b + sqrt_discriminant)
         x2 = (-b - sqrt_discriminant) / (2*a)
     
+    if np.isinf(x1) or np.isinf(x2):
+        return None
     return (x1, x2)
-
 
 def stable_formula(a, b, c):
     """稳定的二次方程求根程序，能够处理各种特殊情况和数值稳定性问题
