@@ -38,7 +38,7 @@ def alternative_formula(a, b, c):
     if discriminant < 0:
         return None
     sqrt_discriminant = np.sqrt(discriminant)
-    
+  
     if b > 0:
         x1 = (2*c) / (-b - sqrt_discriminant)
         x2 = (-b + sqrt_discriminant) / (2*a)
@@ -89,6 +89,7 @@ def main():
         (1, 2, 1),             # 简单情况
         (1, 1e5, 1),           # b远大于a和c
         (0.001, 1000, 0.001),  # 原测试用例
+        (0, 2, 4),  # a=0的情况
     ]
     
     for a, b, c in test_cases:
@@ -117,26 +118,11 @@ def main():
         if roots3:
             print("x1 = {:.15f}, x2 = {:.15f}".format(roots3[0], roots3[1]))
         else:
-            print("无实根")
-        
-        plt.figure(figsize=(10, 6))
-        plt.title("Quadratic equation root results: {}x^2 + {}x + {} = 0".format(a, b, c))
-        plt.xlabel("method")
-        plt.ylabel("root")
-        
-        methods = ["标准公式", "替代公式", "稳定求根程序"]
-        roots = [roots1, roots2, roots3]
-        
-        for i, method in enumerate(methods):
-            if roots[i]:
-                plt.scatter([i, i], [roots[i][0], roots[i][1]], label=method)
-        
-        plt.xticks(range(len(methods)), methods)
-        plt.legend()
-        plt.grid(True)
-        plt.savefig("quadratic_roots_{}_{}_{}.png".format(a, b, c))
-        plt.close()
-        
+            print("无实根") 
+
+
+if __name__ == "__main__":
+    main()
 
 if __name__ == "__main__":
     main()
