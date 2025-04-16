@@ -12,12 +12,14 @@ def standard_formula(a, b, c):
         tuple: 方程的两个根 (x1, x2) 或 None(无实根)
     """
     # 学生在此处实现代码
-    discriminant = b**2 - 4*a*c
-    if discriminant < 0:
+    D = b**2 - 4*a*c
+    
+    if D < 0:
         return None
-    sqrt_discriminant = np.sqrt(discriminant)
-    x1 = (-b + sqrt_discriminant) / (2*a)
-    x2 = (-b - sqrt_discriminant) / (2*a)
+    sqrt_D = np.sqrt(D)
+    x1 = (-b + sqrt_D) / (2*a)
+    x2 = (-b - sqrt_D) / (2*a)
+    
     return (x1, x2)
 
 
@@ -34,22 +36,15 @@ def alternative_formula(a, b, c):
         tuple: 方程的两个根 (x1, x2) 或 None(无实根)
     """
     # 学生在此处实现代码
-    discriminant = b**2 - 4*a*c
-    if discriminant < 0:
-        return None
-    sqrt_discriminant = np.sqrt(discriminant)
+    D = b**2 - 4*a*c
     
-    # 避免灾难性抵消
-    if b > 0:
-        x1 = (2*c) / (-b - sqrt_discriminant)
-        x2 = (-b + sqrt_discriminant) / (2*a)
-    else:
-        x1 = (2*c) / (-b + sqrt_discriminant)
-        x2 = (-b - sqrt_discriminant) / (2*a)
+    if D < 0:
+        return None 
     
-    # 处理可能的数值问题
-    if np.isinf(x1) or np.isinf(x2):
-        return None
+    sqrt_D = np.sqrt(D)
+    x1 = (2*c) / (-b + sqrt_D)
+    x2 = (2*c) / (-b - sqrt_D)
+    
     return (x1, x2)
 
 def stable_formula(a, b, c):
@@ -74,16 +69,18 @@ def stable_formula(a, b, c):
             x = -c / b
             return (x, x)
     
-    discriminant = b**2 - 4*a*c
-    if discriminant < 0:
-        return None
-    sqrt_discriminant = np.sqrt(discriminant)
+    D = b**2 - 4*a*c
+    if D < 0:
+        return None 
+    
+    sqrt_D = np.sqrt(D)
+    
     if b > 0:
-        x1 = (-b - sqrt_discriminant) / (2*a)
-        x2 = (2*c) / (-b - sqrt_discriminant)
+        x1 = (-b - sqrt_D) / (2*a)
+        x2 = (2*c) / (-b - sqrt_D)
     else:
-        x1 = (-b + sqrt_discriminant) / (2*a)
-        x2 = (2*c) / (-b + sqrt_discriminant)
+        x1 = (-b + sqrt_D) / (2*a)
+        x2 = (2*c) / (-b + sqrt_D)
     return (x1, x2)
 
 def main():
@@ -91,7 +88,6 @@ def main():
         (1, 2, 1),             # 简单情况
         (1, 1e5, 1),           # b远大于a和c
         (0.001, 1000, 0.001),  # 原测试用例
-        (0, 2, 4),  # a=0的情况
     ]
     
     for a, b, c in test_cases:
