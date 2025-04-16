@@ -69,10 +69,11 @@ def stable_formula(a, b, c):
             return None if c != 0 else (float('-inf'), float('inf'))
         else:
             return (-c / b, None)
-            
+    
     D = b**2 - 4*a*c
+    
     if D < 0:
-        return None 
+        return None  
     
     sqrt_D = np.sqrt(D)
     
@@ -82,7 +83,7 @@ def stable_formula(a, b, c):
     else:
         x1 = (-b + sqrt_D) / (2*a)
         x2 = (2*c) / (-b + sqrt_D)
-        
+    
     return (min(x1, x2), max(x1, x2))
 
 def main():
