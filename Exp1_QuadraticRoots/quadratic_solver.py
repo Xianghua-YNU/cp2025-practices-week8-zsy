@@ -66,14 +66,10 @@ def stable_formula(a, b, c):
     # 学生在此处实现代码
     if a == 0:
         if b == 0:
-            if c == 0:
-                return None if c != 0 else (float('-inf'), float('inf'))
-            else:
-                return None
+            return None if c != 0 else (float('-inf'), float('inf'))
         else:
-            x = -c / b
             return (-c / b, None)
-    
+            
     D = b**2 - 4*a*c
     if D < 0:
         return None 
