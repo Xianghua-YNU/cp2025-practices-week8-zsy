@@ -38,7 +38,8 @@ def alternative_formula(a, b, c):
     if discriminant < 0:
         return None
     sqrt_discriminant = np.sqrt(discriminant)
-  
+    
+    # 避免灾难性抵消
     if b > 0:
         x1 = (2*c) / (-b - sqrt_discriminant)
         x2 = (-b + sqrt_discriminant) / (2*a)
@@ -46,6 +47,7 @@ def alternative_formula(a, b, c):
         x1 = (2*c) / (-b + sqrt_discriminant)
         x2 = (-b - sqrt_discriminant) / (2*a)
     
+    # 处理可能的数值问题
     if np.isinf(x1) or np.isinf(x2):
         return None
     return (x1, x2)
