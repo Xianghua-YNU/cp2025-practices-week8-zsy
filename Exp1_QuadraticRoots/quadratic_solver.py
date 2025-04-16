@@ -43,14 +43,11 @@ def alternative_formula(a, b, c):
     
     sqrt_D = np.sqrt(D)
     
-    if b > 0:
-        x1 = (2*c) / (-b - sqrt_D)
-        x2 = (-b + sqrt_D) / (2*a)
-    else:
-        x1 = (2*c) / (-b + sqrt_D)
-        x2 = (-b - sqrt_D) / (2*a)
+    x1 = (2 * c) / (-b - sqrt_D)
+    x2 = (2 * c) / (-b + sqrt_D)
     
-    return (min(x1, x2), max(x1, x2)) if x1 != x2 else (x1, x2)
+    return x1, x2
+
 
 def stable_formula(a, b, c):
     """稳定的二次方程求根程序，能够处理各种特殊情况和数值稳定性问题
