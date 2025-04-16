@@ -62,15 +62,18 @@ def stable_formula(a, b, c):
     """
     # 学生在此处实现代码
     if a == 0:
+        # 退化为一次方程
         if b == 0:
+            # 无解或无穷多解
             return None if c != 0 else (float('-inf'), float('inf'))
         else:
             return (-c / b, None)
     
+    # 计算判别式
     D = b**2 - 4*a*c
     
     if D < 0:
-        return None  
+        return None  # 无实根
     
     sqrt_D = np.sqrt(D)
     
