@@ -54,6 +54,16 @@ def stable_formula(a, b, c):
         tuple: 方程的两个根 (x1, x2) 或 None(无实根)
     """
     # 学生在此处实现代码
+    if a == 0:
+        if b == 0:
+            if c == 0:
+                return None
+            else:
+                return None
+        else:
+            x = -c / b
+            return (x, x)
+    
     discriminant = b**2 - 4*a*c
     if discriminant < 0:
         return None
@@ -102,9 +112,9 @@ def main():
             print("无实根")
         
         plt.figure(figsize=(10, 6))
-        plt.title("二次方程求根结果: {}x^2 + {}x + {} = 0".format(a, b, c))
-        plt.xlabel("方法")
-        plt.ylabel("根值")
+        plt.title("Quadratic equation root results: {}x^2 + {}x + {} = 0".format(a, b, c))
+        plt.xlabel("method")
+        plt.ylabel("root")
         
         methods = ["标准公式", "替代公式", "稳定求根程序"]
         roots = [roots1, roots2, roots3]
