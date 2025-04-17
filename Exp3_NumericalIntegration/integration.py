@@ -167,7 +167,7 @@ def time_performance_test(a, b, max_time=1.0):
     trap_time = 0
     
     while rect_time < max_time or trap_time < max_time:
-       start_time = time.time()
+        start_time = time.time()
         rectangle_method(f, a, b, N)
         rect_time = time.time() - start_time
         
@@ -179,16 +179,16 @@ def time_performance_test(a, b, max_time=1.0):
             break
         
         N *= 10
-        
+    
      rect_result = rectangle_method(f, a, b, N)
      trap_result = trapezoid_method(f, a, b, N)
     
      rect_error = abs(rect_result - exact_value) / exact_value
      trap_error = abs(trap_result - exact_value) / exact_value
     
-     print("\n时间性能测试结果:")
-     print(f"矩形法在 {max_time} 秒内达到的最高精度: {rect_error:.10f} (N={N})")
-     print(f"梯形法在 {max_time} 秒内达到的最高精度: {trap_error:.10f} (N={N})")
+    print("\n时间性能测试结果:")
+    print(f"矩形法在 {max_time} 秒内达到的最高精度: {rect_error:.10f} (N={N})")
+    print(f"梯形法在 {max_time} 秒内达到的最高精度: {trap_error:.10f} (N={N})")
 
 
 def calculate_convergence_rate(h_values, errors):
