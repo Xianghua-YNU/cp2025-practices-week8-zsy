@@ -23,7 +23,7 @@ def bessel_up(x, lmax):
     
     for l in range(1, lmax + 1):
             j[l] = 0.0
-        return j
+    return j
    
     if lmax >= 1:
         j[1] = np.sin(x) / x**2 - np.cos(x) / x
