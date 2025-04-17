@@ -46,7 +46,7 @@ def alternative_formula(a, b, c):
     x1 = (2 * c) / (-b - sqrt_D)
     x2 = (2 * c) / (-b + sqrt_D)
     
-    return x1, x2
+    return (x1, x2)
 
 
 def stable_formula(a, b, c):
