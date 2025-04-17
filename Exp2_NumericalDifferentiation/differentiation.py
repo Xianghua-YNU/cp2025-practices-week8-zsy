@@ -11,7 +11,7 @@ def f(x):
         float: 函数计算结果
     """
     # 学生在此实现函数计算
-    pass
+    return x * (x - 1)
 
 def forward_diff(f, x, delta):
     """前向差分法计算导数
@@ -26,7 +26,7 @@ def forward_diff(f, x, delta):
     """
     # 学生在此实现前向差分公式
     # 提示: 使用 (f(x + delta) - f(x)) / delta
-    pass
+    return (f(x + delta) - f(x)) / delta
 
 def central_diff(f, x, delta):
     """中心差分法计算导数
@@ -41,7 +41,7 @@ def central_diff(f, x, delta):
     """
     # 学生在此实现中心差分公式
     # 提示: 使用 (f(x + delta) - f(x - delta)) / (2 * delta)
-    pass
+    return (f(x + delta) - f(x - delta)) / (2 * delta)
 
 def analytical_derivative(x):
     """解析导数 f'(x) = 2x - 1
@@ -53,7 +53,7 @@ def analytical_derivative(x):
         float: 导数的精确值
     """
     # 学生在此实现解析导数公式
-    pass
+    return 2 * x - 1
 
 def calculate_errors(x_point=1.0):
     """计算不同步长下的误差
@@ -72,7 +72,18 @@ def calculate_errors(x_point=1.0):
     # 1. 使用np.logspace生成步长序列
     # 2. 对每个步长计算前向和中心差分
     # 3. 计算相对误差 = |近似值 - 精确值| / |精确值|
-    pass
+    deltas = np.logspace(-2, -14, num=13)  
+    forward_errors = []
+    central_errors = []
+    analytical_value = analytical_derivative(x_point)
+
+    for delta in deltas:
+        forward_value = forward_diff(f, x_point, delta)
+        central_value = central_diff(f, x_point, delta)
+        forward_errors.append(abs(forward_value - analytical_value) / abs(analytical_value))
+        central_errors.append(abs(central_value - analytical_value) / abs(analytical_value))
+
+    return deltas, forward_errors, central_errors
 
 def plot_errors(deltas, forward_errors, central_errors):
     """绘制误差-步长关系图
@@ -87,7 +98,16 @@ def plot_errors(deltas, forward_errors, central_errors):
     # 1. 使用plt.loglog绘制双对数坐标图
     # 2. 添加参考线表示理论收敛阶数
     # 3. 添加图例、标题和坐标轴标签
-    pass
+    plt.figure(figsize=(10, 6))
+    plt.loglog(deltas, forward_errors, marker='o', label='前向差分')
+    plt.loglog(deltas, central_errors, marker='s', label='中心差分')
+    plt.xlabel('step size δ')
+    plt.ylabel('relative error')
+    plt.title('Error-step diagram')
+    plt.legend()
+    plt.grid(True)
+    plt.savefig('error_vs_delta.png')  # 保存为 PNG 格式
+    plt.show()
 
 def print_results(deltas, forward_errors, central_errors):
     """打印计算结果表格
@@ -99,7 +119,16 @@ def print_results(deltas, forward_errors, central_errors):
     """
     # 学生在此实现结果打印
     # 提示: 格式化输出步长和对应误差
-    pass
+    print("步长(δ) | 前向差分值 | 中心差分值 | 解析解 | 前向差分相对误差 | 中心差分相对误差")
+    print("-----------------------------------------------------------------------------")
+    analytical_value = analytical_derivative(1.0)
+    for i in range(len(deltas)):
+        delta = deltas[i]
+        forward_error = forward_errors[i]
+        central_error = central_errors[i]
+        forward_value = forward_diff(f, 1.0, delta)
+        central_value = central_diff(f, 1.0, delta)
+        print(f"{delta:.2e} | {forward_value:.6f} | {central_value:.6f} | {analytical_value:.2f} | {forward_error:.2e} | {central_error:.2e}")
 
 def main():
     """主函数"""
