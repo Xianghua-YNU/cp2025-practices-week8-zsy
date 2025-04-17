@@ -61,10 +61,8 @@ def plot_differences():
     # 3. 使用plt.loglog绘制双对数坐标图
     N_values = np.logspace(1, 4, 50, dtype=int)
     
-    # 计算每个N对应的相对差异
     relative_differences = [calculate_relative_difference(N) for N in N_values]
     
-    # 绘制双对数坐标图
     plt.figure(figsize=(10, 6))
     plt.loglog(N_values, relative_differences, 'b-o', markersize=5, alpha=0.7)
     plt.xlabel('N (number of terms)', fontsize=12)
@@ -73,7 +71,6 @@ def plot_differences():
     plt.grid(True, which="both", linestyle='--', linewidth=0.5)
     plt.tight_layout()
     
-    # 保存图表为PNG文件
     plt.savefig('relative_difference_vs_N.png')
     plt.show()
 
