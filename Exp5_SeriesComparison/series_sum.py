@@ -79,7 +79,7 @@ def calculate_relative_errors(N_values):
         s2 = sum_S2(N)
         s3 = sum_S3(N)
         
-        # 计算相对误差
+
         error1 = abs(s1 - s3) / abs(s3) if s3 != 0 else 0
         error2 = abs(s2 - s3) / abs(s3) if s3 != 0 else 0
         
@@ -111,7 +111,6 @@ def plot_errors(N_values, err1, err2):
     plt.grid(True, which='both', linestyle='--', linewidth=0.5)
     plt.legend()
     
-    # 保存图像
     plt.savefig('误差分析图.png')
     plt.show()
 
