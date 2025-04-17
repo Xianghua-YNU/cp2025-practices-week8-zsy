@@ -17,6 +17,13 @@ def bessel_up(x, lmax):
     # 1. 初始化结果数组
     # 2. 计算j_0和j_1的初始值
     # 3. 使用递推公式计算高阶项
+    if x == 0:
+        j = np.zeros(lmax + 1)
+        j[0] = 1.0  # j0(0) = 1
+        for l in range(1, lmax + 1):
+            j[l] = 0.0
+        return j
+    
     j = np.zeros(lmax + 1)
     
     j[0] = np.sin(x) / x
@@ -49,19 +56,23 @@ def bessel_down(x, lmax, m_start=None):
     if m_start is None:
         m_start = lmax + 15
     
-    # 初始化临时数组并设置初始值
+    if x == 0:
+        j = np.zeros(lmax + 1)
+        j[0] = 1.0  # j0(0) = 1
+        return j
+
     j_temp = np.zeros(m_start + 1)
     j_temp[m_start] = 1.0  # 任意非零初始值
-    j_temp[m_start - 1] = 0.0
-
+    j_temp[m_start - 1] = ((2*m_start + 1)/x * j_temp[m_start])
+    
     for l in range(m_start - 1, lmax, -1):
         j_temp[l-1] = ((2*l + 1)/x * j_temp[l] - j_temp[l+1])
-
-    normalization_factor = spherical_jn(0, x) / j_temp[0]
+    
+    j0_scipy = spherical_jn(0, x)
+    normalization_factor = j0_scipy / j_temp[0]
     j = j_temp[:lmax+1] * normalization_factor
     
     return j
-
 
 def plot_comparison(x, lmax):
     """绘制不同方法计算结果的比较图
@@ -95,6 +106,10 @@ def plot_comparison(x, lmax):
     plt.show()
 
     plt.figure(figsize=(10, 6))
+    
+    relative_error_up = np.where(j_scipy != 0, np.abs((j_up - j_scipy) / j_scipy), 0)
+    relative_error_down = np.where(j_scipy != 0, np.abs((j_down - j_scipy) / j_scipy), 0)
+    
     plt.semilogy(range(lmax + 1), np.abs((j_up - j_scipy) / j_scipy), 'o-', label='Push the relative error upward')
     plt.semilogy(range(lmax + 1), np.abs((j_down - j_scipy) / j_scipy), 's-', label='Push the relative error downward')
     plt.xlabel('order l')
