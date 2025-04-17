@@ -88,7 +88,6 @@ def bessel_down(x, lmax, m_start=None):
     j = j_temp[:lmax+1] * normalization_factor
     
     return j
-
 def plot_comparison(x, lmax):
     """绘制不同方法计算结果的比较图
     
@@ -121,8 +120,10 @@ def plot_comparison(x, lmax):
     plt.show()
 
     plt.figure(figsize=(10, 6))
+    
     relative_error_up = np.where(j_scipy != 0, np.abs((j_up - j_scipy) / j_scipy), 0)
     relative_error_down = np.where(j_scipy != 0, np.abs((j_down - j_scipy) / j_scipy), 0)
+    
     plt.semilogy(range(lmax + 1), np.abs((j_up - j_scipy) / j_scipy), 'o-', label='Push the relative error upward')
     plt.semilogy(range(lmax + 1), np.abs((j_down - j_scipy) / j_scipy), 's-', label='Push the relative error downward')
     plt.xlabel('order l')
