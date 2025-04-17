@@ -83,6 +83,7 @@ def plot_comparison(x, lmax):
    
     j_up = bessel_up(x, lmax)
     j_down = bessel_down(x, lmax)
+    l = np.arange(lmax + 1)
     j_scipy = spherical_jn(l, x)
     
     plt.figure(figsize=(10, 6))
