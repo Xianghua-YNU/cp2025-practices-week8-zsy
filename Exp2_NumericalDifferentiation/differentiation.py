@@ -99,14 +99,14 @@ def plot_errors(deltas, forward_errors, central_errors):
     # 2. 添加参考线表示理论收敛阶数
     # 3. 添加图例、标题和坐标轴标签
     plt.figure(figsize=(10, 6))
-    plt.loglog(deltas, forward_errors, marker='o', label='前向差分')
-    plt.loglog(deltas, central_errors, marker='s', label='中心差分')
+    plt.loglog(deltas, forward_errors, marker='o', label='forward difference')
+    plt.loglog(deltas, central_errors, marker='s', label='central difference')
     plt.xlabel('step size δ')
     plt.ylabel('relative error')
     plt.title('Error-step diagram')
     plt.legend()
     plt.grid(True)
-    plt.savefig('error_vs_delta.png')  # 保存为 PNG 格式
+    plt.savefig('error_vs_delta.png')  
     plt.show()
 
 def print_results(deltas, forward_errors, central_errors):
