@@ -24,12 +24,15 @@ def bessel_up(x, lmax):
             j[l] = 0.0
         return j
     
+    # 初始化结果数组
     j = np.zeros(lmax + 1)
     
+    # 计算j_0和j_1的初始值
     j[0] = np.sin(x) / x
     if lmax >= 1:
         j[1] = np.sin(x) / x**2 - np.cos(x) / x
     
+    # 使用递推公式计算高阶项
     for l in range(1, lmax):
         j[l+1] = ((2*l + 1)/x * j[l] - j[l-1])
     
@@ -56,20 +59,32 @@ def bessel_down(x, lmax, m_start=None):
     if m_start is None:
         m_start = lmax + 15
     
+    # 处理x=0的特殊情况
     if x == 0:
         j = np.zeros(lmax + 1)
         j[0] = 1.0  # j0(0) = 1
         return j
-
+    
+    # 初始化临时数组并设置初始值
     j_temp = np.zeros(m_start + 1)
     j_temp[m_start] = 1.0  # 任意非零初始值
-    j_temp[m_start - 1] = ((2*m_start + 1)/x * j_temp[m_start])
+    if m_start >= 1:
+        j_temp[m_start - 1] = ((2*m_start + 1)/x * j_temp[m_start])
     
+    # 使用递推公式向下计算
     for l in range(m_start - 1, lmax, -1):
-        j_temp[l-1] = ((2*l + 1)/x * j_temp[l] - j_temp[l+1])
+        if l >= 1:
+            j_temp[l-1] = ((2*l + 1)/x * j_temp[l] - j_temp[l+1])
+        else:
+            j_temp[l-1] = 0.0  # 避免除以零的情况
     
+    # 使用解析的j_0(x)进行归一化
     j0_scipy = spherical_jn(0, x)
-    normalization_factor = j0_scipy / j_temp[0]
+    # 避免除以零的情况
+    if j_temp[0] == 0:
+        normalization_factor = 0.0
+    else:
+        normalization_factor = j0_scipy / j_temp[0]
     j = j_temp[:lmax+1] * normalization_factor
     
     return j
@@ -106,10 +121,8 @@ def plot_comparison(x, lmax):
     plt.show()
 
     plt.figure(figsize=(10, 6))
-    
     relative_error_up = np.where(j_scipy != 0, np.abs((j_up - j_scipy) / j_scipy), 0)
     relative_error_down = np.where(j_scipy != 0, np.abs((j_down - j_scipy) / j_scipy), 0)
-    
     plt.semilogy(range(lmax + 1), np.abs((j_up - j_scipy) / j_scipy), 'o-', label='Push the relative error upward')
     plt.semilogy(range(lmax + 1), np.abs((j_down - j_scipy) / j_scipy), 's-', label='Push the relative error downward')
     plt.xlabel('order l')
