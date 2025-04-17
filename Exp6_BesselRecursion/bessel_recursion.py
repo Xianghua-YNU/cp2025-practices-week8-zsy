@@ -56,7 +56,7 @@ def bessel_down(x, lmax, m_start=None):
     # 3. 使用递推公式向下计算
     # 4. 使用j_0(x)进行归一化
     
-    iif m_start is None:
+    if m_start is None:
         m_start = lmax + 15
     
     # 处理x=0的特殊情况
