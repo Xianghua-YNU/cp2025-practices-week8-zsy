@@ -180,15 +180,12 @@ while rect_time < max_time or trap_time < max_time:
         
         N *= 10
     
-    rect_result = rectangle_method(f, a, b, N)
-    trap_result = trapezoid_method(f, a, b, N)
+     rect_result = rectangle_method(f, a, b, N)
+     trap_result = trapezoid_method(f, a, b, N)
     
-    rect_error = abs(rect_result - exact_value) / exact_value
-    trap_error = abs(trap_result - exact_value) / exact_value
-    
-    print("\n时间性能测试结果:")
-    print(f"矩形法在 {max_time} 秒内达到的最高精度: {rect_error:.10f} (N={N})")
-    print(f"梯形法在 {max_time} 秒内达到的最高精度: {trap_error:.10f} (N={N})")
+     rect_error = abs(rect_result - exact_value) / exact_value
+     trap_error = abs(trap_result - exact_value) / exact_value
+
 
 def calculate_convergence_rate(h_values, errors):
     """计算收敛阶数
