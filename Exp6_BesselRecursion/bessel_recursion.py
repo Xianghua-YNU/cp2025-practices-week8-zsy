@@ -17,18 +17,14 @@ def bessel_up(x, lmax):
     # 1. 初始化结果数组
     # 2. 计算j_0和j_1的初始值
     # 3. 使用递推公式计算高阶项
-    if x == 0:
-        j = np.zeros(lmax + 1)
-        j[0] = 1.0  # j0(0) = 1
-        for l in range(1, lmax + 1):
+    
+    j = np.zeros(lmax + 1)
+    j[0] = np.sin(x) / x if x != 0 else 1.0  # j_0(x)
+    
+    for l in range(1, lmax + 1):
             j[l] = 0.0
         return j
-    
-    # 初始化结果数组
-    j = np.zeros(lmax + 1)
-    
-    # 计算j_0和j_1的初始值
-    j[0] = np.sin(x) / x
+   
     if lmax >= 1:
         j[1] = np.sin(x) / x**2 - np.cos(x) / x
     
@@ -58,36 +54,30 @@ def bessel_down(x, lmax, m_start=None):
     
     if m_start is None:
         m_start = lmax + 15
-    
-    # 处理x=0的特殊情况
+
     if x == 0:
         j = np.zeros(lmax + 1)
         j[0] = 1.0  # j0(0) = 1
         return j
-    
-    # 初始化临时数组并设置初始值
-    j_temp = np.zeros(m_start + 1)
-    j_temp[m_start] = 1.0  # 任意非零初始值
+
+    j_temp = np.zeros(m_start + 2)
+
+    j_temp[m_start+1] = 0.0
+    j_temp[m_start] = 1.0
+
     if m_start >= 1:
         j_temp[m_start - 1] = ((2*m_start + 1)/x * j_temp[m_start])
     
-    # 使用递推公式向下计算
-    for l in range(m_start - 1, lmax, -1):
-        if l >= 1:
-            j_temp[l-1] = ((2*l + 1)/x * j_temp[l] - j_temp[l+1])
-        else:
-            j_temp[l-1] = 0.0  # 避免除以零的情况
+    for l in range(m_start, 0, -1):
+        j_temp[l-1] = (2*l + 1) / x * j_temp[l] - j_temp[l+1]
     
-    # 使用解析的j_0(x)进行归一化
-    j0_scipy = spherical_jn(0, x)
-    # 避免除以零的情况
-    if j_temp[0] == 0:
-        normalization_factor = 0.0
-    else:
-        normalization_factor = j0_scipy / j_temp[0]
-    j = j_temp[:lmax+1] * normalization_factor
+    j0_analytic = np.sin(x) / x if x != 0 else 1.0
+
+    scale = j0_analytic / j_temp[0]
+    j = j_temp[:lmax+1] * scale
     
     return j
+
     
 def plot_comparison(x, lmax):
     """绘制不同方法计算结果的比较图
