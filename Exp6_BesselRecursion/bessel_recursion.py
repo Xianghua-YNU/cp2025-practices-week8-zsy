@@ -21,7 +21,7 @@ def bessel_up(x, lmax):
     j = np.zeros(lmax + 1)
     j[0] = np.sin(x) / x if x != 0 else 1.0  # j_0(x)
     
-   for l in range(1, lmax):
+    for l in range(1, lmax):
         j[l+1] = ((2*l + 1)/x * j[l] - j[l-1])
    
     if lmax >= 1:
