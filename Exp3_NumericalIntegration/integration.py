@@ -117,7 +117,6 @@ def plot_errors(h_values, rect_errors, trap_errors):
     plt.loglog(h_values, rect_errors, 'o-', label='rectangle method')
     plt.loglog(h_values, trap_errors, 's-', label='trapezoidal method')
     
-    # 添加参考线
     plt.loglog(h_values, [h**1 for h in h_values], '--', label='O(h)')
     plt.loglog(h_values, [h**2 for h in h_values], '--', label='O(h²)')
     
@@ -127,7 +126,6 @@ def plot_errors(h_values, rect_errors, trap_errors):
     plt.legend()
     plt.grid(True)
     
-    # 保存图表为 PNG 文件
     plt.savefig('error_convergence.png', dpi=300)
     plt.show()
 
