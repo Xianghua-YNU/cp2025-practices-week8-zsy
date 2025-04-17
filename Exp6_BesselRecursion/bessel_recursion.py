@@ -17,7 +17,16 @@ def bessel_up(x, lmax):
     # 1. 初始化结果数组
     # 2. 计算j_0和j_1的初始值
     # 3. 使用递推公式计算高阶项
-    pass
+    j = np.zeros(lmax + 1)
+    
+    j[0] = np.sin(x) / x
+    if lmax >= 1:
+        j[1] = np.sin(x) / x**2 - np.cos(x) / x
+    
+    for l in range(1, lmax):
+        j[l+1] = ((2*l + 1)/x * j[l] - j[l-1])
+    
+    return j
 
 def bessel_down(x, lmax, m_start=None):
     """向下递推计算球贝塞尔函数
@@ -36,7 +45,23 @@ def bessel_down(x, lmax, m_start=None):
     # 2. 初始化临时数组并设置初始值
     # 3. 使用递推公式向下计算
     # 4. 使用j_0(x)进行归一化
-    pass
+    
+    if m_start is None:
+        m_start = lmax + 15
+    
+    # 初始化临时数组并设置初始值
+    j_temp = np.zeros(m_start + 1)
+    j_temp[m_start] = 1.0  # 任意非零初始值
+    j_temp[m_start - 1] = 0.0
+
+    for l in range(m_start - 1, lmax, -1):
+        j_temp[l-1] = ((2*l + 1)/x * j_temp[l] - j_temp[l+1])
+
+    normalization_factor = spherical_jn(0, x) / j_temp[0]
+    j = j_temp[:lmax+1] * normalization_factor
+    
+    return j
+
 
 def plot_comparison(x, lmax):
     """绘制不同方法计算结果的比较图
@@ -51,7 +76,35 @@ def plot_comparison(x, lmax):
     # 2. 绘制函数值的半对数图
     # 3. 绘制相对误差的半对数图
     # 4. 添加图例、标签和标题
-    pass
+   
+    j_up = bessel_up(x, lmax)
+    j_down = bessel_down(x, lmax)
+    j_scipy = np.array([spherical_jn(l, x) for l in range(lmax + 1)])
+    
+    plt.figure(figsize=(10, 6))
+    plt.semilogy(range(lmax + 1), np.abs(j_up), 'o-', label='Push upwards')
+    plt.semilogy(range(lmax + 1), np.abs(j_down), 's-', label='Push downwards')
+    plt.semilogy(range(lmax + 1), np.abs(j_scipy), 'x-', label='Scipy reference value')
+    plt.xlabel('order l')
+    plt.ylabel('|j_l(x)|')
+    plt.title(f'Comparison of spherical Bezier function values (x = {x})')
+    plt.legend()
+    plt.grid(True)
+    
+    plt.savefig(f'bessel_comparison_x{x:.1f}.png') 
+    plt.show()
+
+    plt.figure(figsize=(10, 6))
+    plt.semilogy(range(lmax + 1), np.abs((j_up - j_scipy) / j_scipy), 'o-', label='Push the relative error upward')
+    plt.semilogy(range(lmax + 1), np.abs((j_down - j_scipy) / j_scipy), 's-', label='Push the relative error downward')
+    plt.xlabel('order l')
+    plt.ylabel('relative error')
+    plt.title(f'Comparison of relative errors of spherical Bezier functions (x = {x})')
+    plt.legend()
+    plt.grid(True)
+    
+    plt.savefig(f'bessel_error_x{x:.1f}.png') 
+    plt.show()
 
 def main():
     """主函数"""
