@@ -66,11 +66,10 @@ def stable_formula(a, b, c):
             return None if abs(c) > 1e-10 else (0, 0)  
         return (-c/b, -c/b) 
     
-    # 计算判别式
     D = b**2 - 4*a*c
     
     if D < 0:
-        return None  # 无实根
+        return None 
     
     sqrt_D = np.sqrt(D)
     
