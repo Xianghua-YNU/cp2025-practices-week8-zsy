@@ -48,20 +48,12 @@ def bessel_down(x, lmax, m_start=None):
     # 4. 使用j_0(x)进行归一化
     
     if m_start is None:
-        m_start = lmax + 15
-
-    if x == 0:
-        j = np.zeros(lmax + 1)
-        j[0] = 1.0  # j0(0) = 1
-        return j
+       m_start = lmax + 15
 
     j_temp = np.zeros(m_start + 2)
 
     j_temp[m_start+1] = 0.0
     j_temp[m_start] = 1.0
-
-    if m_start >= 1:
-        j_temp[m_start - 1] = ((2*m_start + 1)/x * j_temp[m_start])
     
     for l in range(m_start, 0, -1):
         j_temp[l-1] = (2*l + 1) / x * j_temp[l] - j_temp[l+1]
