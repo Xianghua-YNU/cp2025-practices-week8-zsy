@@ -12,7 +12,16 @@ def standard_formula(a, b, c):
         tuple: 方程的两个根 (x1, x2) 或 None(无实根)
     """
     # 学生在此处实现代码
-    pass
+    D = b**2 - 4*a*c
+    
+    if D < 0:
+        return None
+    sqrt_D = np.sqrt(D)
+    x1 = (-b + sqrt_D) / (2*a)
+    x2 = (-b - sqrt_D) / (2*a)
+    
+    return (x1, x2)
+
 
 def alternative_formula(a, b, c):
     """使用替代公式求解二次方程 ax^2 + bx + c = 0
@@ -27,7 +36,18 @@ def alternative_formula(a, b, c):
         tuple: 方程的两个根 (x1, x2) 或 None(无实根)
     """
     # 学生在此处实现代码
-    pass
+    D = b**2 - 4*a*c
+    
+    if D < 0:
+        return None 
+    
+    sqrt_D = np.sqrt(D)
+    
+    x1 = (2 * c) / (-b - sqrt_D)
+    x2 = (2 * c) / (-b + sqrt_D)
+    
+    return (x1, x2)
+
 
 def stable_formula(a, b, c):
     """稳定的二次方程求根程序，能够处理各种特殊情况和数值稳定性问题
@@ -41,7 +61,26 @@ def stable_formula(a, b, c):
         tuple: 方程的两个根 (x1, x2) 或 None(无实根)
     """
     # 学生在此处实现代码
-    pass
+    if abs(a) < 1e-10:
+        if abs(b) < 1e-10:  # a ≈ 0 且 b ≈ 0
+            return None if abs(c) > 1e-10 else (0, 0)  
+        return (-c/b, -c/b) 
+    
+    D = b**2 - 4*a*c
+    
+    if D < 0:
+        return None 
+    
+    sqrt_D = np.sqrt(D)
+    
+    if b > 0:
+        x1 = (-b - sqrt_D) / (2*a)
+        x2 = (2*c) / (-b - sqrt_D)
+    else:
+        x1 = (-b + sqrt_D) / (2*a)
+        x2 = (2*c) / (-b + sqrt_D)
+    
+    return (min(x1, x2), max(x1, x2)) if x1 != x2 else (x1, x2)
 
 def main():
     test_cases = [
@@ -76,7 +115,8 @@ def main():
         if roots3:
             print("x1 = {:.15f}, x2 = {:.15f}".format(roots3[0], roots3[1]))
         else:
-            print("无实根")
+            print("无实根") 
+
 
 if __name__ == "__main__":
     main()
