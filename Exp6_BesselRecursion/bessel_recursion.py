@@ -19,13 +19,14 @@ def bessel_up(x, lmax):
     # 3. 使用递推公式计算高阶项
     
     j = np.zeros(lmax + 1)
+    
     j[0] = np.sin(x) / x if x != 0 else 1.0  # j_0(x)
     
+    if lmax > 0:
+        j[1] = np.sin(x) / x**2 - np.cos(x) / x  # j_1(x)
+
     for l in range(1, lmax):
-        j[l+1] = ((2*l + 1)/x * j[l] - j[l-1])
-   
-    if lmax >= 1:
-        j[1] = np.sin(x) / x**2 - np.cos(x) / x
+        j[l+1] = (2*l + 1) / x * j[l] - j[l-1]
     
     return j
 
@@ -82,7 +83,7 @@ def plot_comparison(x, lmax):
    
     j_up = bessel_up(x, lmax)
     j_down = bessel_down(x, lmax)
-    j_scipy = np.array([spherical_jn(l, x) for l in range(lmax + 1)])
+    j_scipy = spherical_jn(l, x)
     
     plt.figure(figsize=(10, 6))
     plt.semilogy(range(lmax + 1), np.abs(j_up), 'o-', label='Push upwards')
